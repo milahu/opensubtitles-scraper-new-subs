@@ -1274,3 +1274,4 @@
 9539744.project.gutenberg.(2018).fre.1cd.zip
 9539752.palm.trees.and.power.lines.(2022).slv.1cd.zip
 9539751.palm.trees.and.power.lines.(2022).scc.1cd.zip
+9539750.palm.trees.and.power.lines.(2022).hrv.1cd.zip

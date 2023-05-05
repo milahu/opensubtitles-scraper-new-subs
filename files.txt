@@ -871,3 +871,4 @@
 9522300.extrapolations.s01.e06.2066.lola.(2023).rus.1cd.zip
 9522304.extrapolations.s01.e06.2066.lola.(2023).tel.1cd.zip
 9522307.extrapolations.s01.e06.2066.lola.(2023).vie.1cd.zip
+9522299.extrapolations.s01.e06.2066.lola.(2023).nor.1cd.zip

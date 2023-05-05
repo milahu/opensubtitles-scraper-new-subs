@@ -927,3 +927,4 @@
 9522360.extrapolations.s01.e08.2070.ecocide.(2023).lav.1cd.zip
 9522367.extrapolations.s01.e08.2070.ecocide.(2023).slo.1cd.zip
 9522364.extrapolations.s01.e08.2070.ecocide.(2023).nor.1cd.zip
+9522359.extrapolations.s01.e08.2070.ecocide.(2023).spl.1cd.zip

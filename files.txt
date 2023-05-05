@@ -479,3 +479,4 @@
 9521966.walk.east.on.beacon.(1952).scc.1cd.zip
 9521970.dallas.s02.e03.old.acquaintance.(1978).pob.1cd.zip
 9521964.not-found
+9521986.animal.kingdom.s01.e01.pilot.(2016).per.1cd.zip

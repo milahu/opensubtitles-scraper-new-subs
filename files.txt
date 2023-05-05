@@ -1273,3 +1273,4 @@
 9539697.supercar.s01.e21.crash.landing.(1961).pob.1cd.zip
 9539744.project.gutenberg.(2018).fre.1cd.zip
 9539752.palm.trees.and.power.lines.(2022).slv.1cd.zip
+9539751.palm.trees.and.power.lines.(2022).scc.1cd.zip

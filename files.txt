@@ -4243,3 +4243,4 @@
 9542643.cern.(2013).hun.1cd.zip
 9542654.danger.close.(2019).spa.1cd.zip
 9542655.rawhide.s06.e03.incident.at.el.crucero.(1963).cze.1cd.zip
+9542653.star.wars.visions.s02.e01.sith.(2023).rus.1cd.zip

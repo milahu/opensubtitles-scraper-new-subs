@@ -4183,3 +4183,4 @@
 9542584.not-found
 9542573.not.dead.yet.s01.e11.not.feeling.it.yet.(2023).eng.1cd.zip
 9542586.not.dead.yet.s01.e12.not.a.fairytale.yet.(2023).ind.1cd.zip
+9542574.not.dead.yet.s01.e10.not.well.yet.(2023).eng.1cd.zip

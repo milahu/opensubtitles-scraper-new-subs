@@ -12092,3 +12092,4 @@
 9550512.black.knight.s01.e01.episode.1.1.(2023).ukr.1cd.zip
 9550621.black.knight.s01.e06.episode.1.6.(2023).ara.1cd.zip
 9550538.black.knight.s01.e02.episode.1.2.(2023).tur.1cd.zip
+9550513.black.knight.s01.e01.episode.1.1.(2023).vie.1cd.zip

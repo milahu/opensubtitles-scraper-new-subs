@@ -13595,3 +13595,4 @@
 9551984.an.unknown.enemy.s02.e02.generacion.1945.(2022).ara.1cd.zip
 9552013.an.unknown.enemy.s01.e08.operacion.galeana.(2018).rus.1cd.zip
 9552099.an.unknown.enemy.s01.e03.a.la.calle.(2018).tur.1cd.zip
+9552114.an.unknown.enemy.s01.e03.a.la.calle.(2018).chi.1cd.zip

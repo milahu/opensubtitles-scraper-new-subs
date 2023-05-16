@@ -17277,3 +17277,4 @@
 9555683.not-found
 9555709.a.small.light.s01.e06.episode.1.6.(2023).swe.1cd.zip
 9555702.a.small.light.s01.e06.episode.1.6.(2023).hun.1cd.zip
+9555707.a.small.light.s01.e06.episode.1.6.(2023).rum.1cd.zip

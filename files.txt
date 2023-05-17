@@ -18634,3 +18634,4 @@
 9557041.run.bts.operation.007.part.2.().ita.1cd.zip
 9557042.run.bts.s01.e81.bts.vr.part.1.(2019).ita.1cd.zip
 9557048.run.bts.s01.e87.hangul.day.special.part.2.(2019).ita.1cd.zip
+9557034.run.bts.s01.e74.run.bts.drama.part.2.(2019).ita.1cd.zip

@@ -19881,3 +19881,4 @@
 9558271.en.af.drengene.s01.e02.episode.1.2.(2023).dut.1cd.zip
 9558321.kitti.katz.s01.e06.episode.1.6.(2023).ind.1cd.zip
 9558319.kitti.katz.s01.e08.episode.1.8.(2023).ind.1cd.zip
+9558275.arkitekten.s01.e02.naboer.(neighbours).(2023).dan.1cd.zip

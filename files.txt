@@ -20024,3 +20024,4 @@
 9558430.ai.zuozhan.(2004).eng.1cd.zip
 9558323.kitti.katz.s01.e04.episode.1.4.(2023).ind.1cd.zip
 9558379.game.of.thrones.s01.e09.baelor.(2011).ara.1cd.zip
+9558376.game.of.thrones.s01.e06.a.golden.crown.(2011).ara.1cd.zip

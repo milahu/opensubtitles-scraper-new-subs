@@ -31871,3 +31871,4 @@
 9570656.fubar.s01.e02.episode.1.2.(2023).fin.1cd.zip
 9570598.fubar.s01.e01.episode.1.1.(2023).spl.1cd.zip
 9570691.not-found
+9570662.fubar.s01.e07.episode.1.7.(2023).fin.1cd.zip

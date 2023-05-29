@@ -40234,3 +40234,4 @@
 9578753.shrinking.s01.e10.closure.(2023).est.1cd.zip
 9578640.shrinking.s01.e06.imposter.syndrome.(2023).est.1cd.zip
 9578593.shrinking.s01.e05.woof.(2023).dan.1cd.zip
+9578628.shrinking.s01.e05.woof.(2023).slo.1cd.zip

@@ -44423,3 +44423,4 @@
 9582826.fake.profile.s01.e06.episode.1.6.(2023).ita.1cd.zip
 9582860.fake.profile.s01.e07.episode.1.7.(2023).ger.1cd.zip
 9582858.fake.profile.s01.e05.episode.1.5.(2023).ger.1cd.zip
+9582904.fake.profile.s01.e05.episode.1.5.(2023).hrv.1cd.zip

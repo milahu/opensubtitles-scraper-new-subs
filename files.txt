@@ -46729,3 +46729,4 @@
 9585206.smother.s01.e06.episode.1.6.(2021).eng.1cd.zip
 9585081.deadloch.s01.e02.episode.1.2.(2023).fre.1cd.zip
 9585057.deadloch.s01.e01.episode.1.1.(2023).swe.1cd.zip
+9585060.deadloch.s01.e01.episode.1.1.(2023).rus.1cd.zip

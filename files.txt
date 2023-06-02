@@ -46736,3 +46736,4 @@
 9585233.manifest.s04.e13.ghost.plane.(2023).eng.1cd.zip
 9585263.manifest.s04.e20.final.boarding.(2023).eng.1cd.zip
 9585276.manifest.s04.e11.final.descent.(2023).tur.1cd.zip
+9585075.deadloch.s01.e02.episode.1.2.(2023).ger.1cd.zip

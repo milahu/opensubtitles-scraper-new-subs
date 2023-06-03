@@ -48309,3 +48309,4 @@
 9586307.manifest.s04.e11.final.descent.(2023).fre.1cd.zip
 9586734.scoop.s01.e04.episode.1.4.(2023).tha.1cd.zip
 9586498.manifest.s04.e13.ghost.plane.(2023).vie.1cd.zip
+9586345.manifest.s04.e14.fata.morgana.(2023).ell.1cd.zip

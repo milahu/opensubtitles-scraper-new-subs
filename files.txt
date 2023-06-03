@@ -48300,3 +48300,4 @@
 9586284.manifest.s04.e11.final.descent.(2023).dan.1cd.zip
 9586718.scoop.s01.e02.episode.1.2.(2023).rus.1cd.zip
 9586717.scoop.s01.e01.episode.1.1.(2023).rus.1cd.zip
+9586690.scoop.s01.e02.episode.1.2.(2023).nor.1cd.zip

@@ -47927,3 +47927,4 @@
 9586727.scoop.s01.e04.episode.1.4.(2023).swe.1cd.zip
 9586305.manifest.s04.e20.final.boarding.(2023).tgl.1cd.zip
 9586664.scoop.s01.e04.episode.1.4.(2023).hun.1cd.zip
+9586742.scoop.s01.e05.episode.1.5.(2023).tur.1cd.zip

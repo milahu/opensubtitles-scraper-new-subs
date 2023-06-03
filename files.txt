@@ -47834,3 +47834,4 @@
 9586333.manifest.s04.e14.fata.morgana.(2023).ger.1cd.zip
 9586665.scoop.s01.e05.episode.1.5.(2023).hun.1cd.zip
 9586232.alien3.(1992).swe.1cd.zip
+9586739.scoop.s01.e02.episode.1.2.(2023).tur.1cd.zip

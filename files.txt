@@ -47831,3 +47831,4 @@
 9586603.scoop.s01.e06.episode.1.6.(2023).cze.1cd.zip
 9586612.scoop.s01.e01.episode.1.1.(2023).ger.1cd.zip
 9586619.scoop.s01.e01.episode.1.1.(2023).ell.1cd.zip
+9586333.manifest.s04.e14.fata.morgana.(2023).ger.1cd.zip

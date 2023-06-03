@@ -47978,3 +47978,4 @@
 9586356.manifest.s04.e14.fata.morgana.(2023).hrv.1cd.zip
 9586335.manifest.s04.e16.furball.(2023).ger.1cd.zip
 9586351.manifest.s04.e20.final.boarding.(2023).ell.1cd.zip
+9586375.manifest.s04.e11.final.descent.(2023).kor.1cd.zip

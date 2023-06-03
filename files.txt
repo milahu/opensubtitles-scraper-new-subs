@@ -48596,3 +48596,4 @@
 9586384.manifest.s04.e20.final.boarding.(2023).kor.1cd.zip
 9586657.scoop.s01.e04.episode.1.4.(2023).hrv.1cd.zip
 9586442.manifest.s04.e12.bug.out.(2023).spa.1cd.zip
+9586637.scoop.s01.e05.episode.1.5.(2023).spa.1cd.zip

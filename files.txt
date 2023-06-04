@@ -49719,3 +49719,4 @@
 9588216.not-found
 9588140.vortex.s01.e03.episode.3.(2022).ara.1cd.zip
 9588149.vortex.s01.e05.episode.5.(2022).cze.1cd.zip
+9588145.vortex.s01.e01.episode.1.(2022).cze.1cd.zip

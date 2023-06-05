@@ -51587,3 +51587,4 @@
 9589935.professor.t.s01.e03.tiger.tiger.(2021).ind.1cd.zip
 9590018.not-found
 9589983.barracuda.queens.s01.e04.episode.1.4.(2023).eng.1cd.zip
+9590068.barracuda.queens.s01.e06.episode.1.6.(2023).fin.1cd.zip

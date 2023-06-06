@@ -52505,3 +52505,4 @@
 9590949.barracuda.queens.s01.e06.episode.1.6.(2023).ita.1cd.zip
 9590995.barracuda.queens.s01.e01.episode.1.1.(2023).jpn.1cd.zip
 9590936.vinland.saga.s02.e22.episode.2.22.().rum.1cd.zip
+9590924.vinland.saga.s02.e22.episode.2.22.().swe.1cd.zip

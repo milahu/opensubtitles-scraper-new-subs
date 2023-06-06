@@ -52465,3 +52465,4 @@
 9590982.barracuda.queens.s01.e03.episode.1.3.(2023).heb.1cd.zip
 9591006.barracuda.queens.s01.e05.episode.1.5.(2023).pob.1cd.zip
 9590990.barracuda.queens.s01.e03.episode.1.3.(2023).hun.1cd.zip
+9590962.barracuda.queens.s01.e05.episode.1.5.(2023).spl.1cd.zip

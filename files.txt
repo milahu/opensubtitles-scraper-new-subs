@@ -66932,3 +66932,4 @@
 9605336.machine.(2019).spl.1cd.zip
 9605345.jack.irish.s01.e01.episode.1.1.(2016).dut.1cd.zip
 9605348.jack.irish.s01.e04.episode.1.4.(2016).dut.1cd.zip
+9605346.jack.irish.s01.e02.episode.1.2.(2016).dut.1cd.zip

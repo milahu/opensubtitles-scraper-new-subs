@@ -66676,3 +66676,4 @@
 9605198.golden.pennies.s01.e06.episode.1.6.(1985).eng.1cd.zip
 9605137.startup.s03.e03.guerilla.(2018).dut.1cd.zip
 9605048.halt.and.catch.fire.s03.e07.the.threshold.(2016).dut.1cd.zip
+9605027.halt.and.catch.fire.s01.e06.landfall.(2014).dut.1cd.zip

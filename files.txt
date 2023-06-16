@@ -66597,3 +66597,4 @@
 9605124.startup.s02.e01.disruption.(2017).dut.1cd.zip
 9605129.startup.s02.e06.liabilities.(2017).dut.1cd.zip
 9605004.black.clover.sword.of.the.wizard.king.(2023).hrv.1cd.zip
+9605032.halt.and.catch.fire.s02.e01.seti.(2015).dut.1cd.zip

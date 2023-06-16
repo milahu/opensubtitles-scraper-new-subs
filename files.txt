@@ -66622,3 +66622,4 @@
 9605163.wayward.pines.s02.e01.enemy.lines.(2016).dut.1cd.zip
 9605066.manhunt.s01.e04.publish.or.perish.(2017).dut.1cd.zip
 9605142.startup.s03.e08.profit.and.loss.(2018).dut.1cd.zip
+9605040.halt.and.catch.fire.s02.e09.kali.(2015).dut.1cd.zip

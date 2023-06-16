@@ -66620,3 +66620,4 @@
 9605119.startup.s01.e06.bootstrapped.(2016).dut.1cd.zip
 9605162.wayward.pines.s01.e10.cycle.(2015).dut.1cd.zip
 9605163.wayward.pines.s02.e01.enemy.lines.(2016).dut.1cd.zip
+9605066.manhunt.s01.e04.publish.or.perish.(2017).dut.1cd.zip

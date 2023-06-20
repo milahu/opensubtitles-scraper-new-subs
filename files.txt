@@ -70149,3 +70149,4 @@
 9608682.mr.robot.s02.e01.eps2.0_unm4skpt1.tc.(2016).chi.1cd.zip
 9608591.not.quite.narwhal.s01.e07.episode.1.7.(tv.episode).().por.1cd.zip
 9608561.not.quite.narwhal.s01.e05.episode.1.5.(tv.episode).().jpn.1cd.zip
+9608533.not.quite.narwhal.s01.e05.episode.1.5.(tv.episode).().fre.1cd.zip

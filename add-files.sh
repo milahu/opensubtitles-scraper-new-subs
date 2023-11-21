@@ -8,7 +8,9 @@
 
 # exit on error
 set -e
-set -x
+
+# debu: trace all commands
+#set -x
 
 
 

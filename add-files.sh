@@ -41,12 +41,12 @@ for file_path in "${files[@]}"; do
   old_name="$(basename "$file_path")"
   new_name="$(echo "$old_name" | sed -E 's/(.*)\.\(([0-9]+)\)\.zip$/\2.\1.zip/')"
 
-  if grep -q "$new_name" files.txt; then
-    echo "file exists: $new_name"
+  num=$(echo "$new_name" | cut -d. -f1)
+
+  if grep -q "^$num." files.txt; then
+    echo "ignoring file: $new_name"
     continue
   fi
-
-  num=$(echo "$new_name" | cut -d. -f1)
 
   worktree_path="nums/$num"
 

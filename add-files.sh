@@ -34,6 +34,8 @@ fi
 
 
 
+files_added=false
+
 for file_path in "${files[@]}"; do
 
   echo "adding file: $file_path"
@@ -75,10 +77,16 @@ for file_path in "${files[@]}"; do
   git add files.txt
   git commit --quiet -m "files.txt: add $num"
 
+  files_added=true
+
 done
 
 
 
-echo pushing all branches
-#git push --all --force
-git push --all
+if $files_added; then
+
+  echo pushing all branches
+  #git push --all --force
+  git push --all
+
+fi

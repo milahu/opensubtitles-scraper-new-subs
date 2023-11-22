@@ -38,44 +38,77 @@ files_added=false
 
 for file_path in "${files[@]}"; do
 
-  echo "adding file: $file_path"
-
   old_name="$(basename "$file_path")"
-  new_name="$(echo "$old_name" | sed -E 's/(.*)\.\(([0-9]+)\)\.zip$/\2.\1.zip/')"
+
+  if ! [ -e "$file_path" ]; then
+    echo "no such file: $file_path"
+    continue
+  fi
+
+  if ! echo "$old_name" | grep -q -E "^([0-9]+\.(.*\.[0-9]+cd\.zip|not-found)|.*\.[0-9]+cd\.\(([0-9]+)\)\.zip)$"; then
+    echo "ignoring non-subtitle file: $file_path"
+    continue
+  fi
+
+  if echo "$old_name" | grep -q -E "^[0-9]+\.(.*\.[0-9]+cd\.zip|not-found)$"; then
+    # filename already has the "new" format
+    # = num was already moved from end to start
+    new_name="$old_name"
+  else
+    # move num from end to start
+    # a: some.movie.(2023).eng.1cd.(12345).zip
+    # b: 12345.some.movie.(2023).eng.1cd.zip
+    new_name="$(echo "$old_name" | sed -E 's/(.*\.[0-9]+cd)\.\(([0-9]+)\)\.zip$/\2.\1.zip/')"
+    if [[ "$old_name" == "$new_name" ]]; then
+      echo "failed to fix filename: $file_path"
+      continue
+    fi
+  fi
 
   num=$(echo "$new_name" | cut -d. -f1)
 
   if grep -q "^$num." files.txt; then
     echo "ignoring file: $new_name"
+    mv -v "$file_path" trash/ || rm -v "$file_path"
     continue
   fi
 
-  worktree_path="nums/$num"
+  if ! echo "$new_name" | grep -q -E "^[0-9]+\.(not-found)$"; then
 
-  if [ -d "$worktree_path" ]; then
-    echo "removing old worktree $worktree_path"
+    echo "adding file: $file_path"
+
+    worktree_path="nums/$num"
+
+    if [ -d "$worktree_path" ]; then
+      echo "removing old worktree $worktree_path"
+      git worktree remove "$worktree_path"
+    fi
+
+    # mount worktree
+    git worktree add --quiet --detach --no-checkout "$worktree_path"
+
+    # create new orphan branch
+    branch_name="nums/$num"
+    git -C "$worktree_path" checkout --quiet --orphan "$branch_name"
+    git -C "$worktree_path" reset
+    git -C "$worktree_path" clean -fdq
+
+    # add file
+    cp "$file_path" "nums/$num/$new_name"
+    git -C "$worktree_path" add "$new_name"
+    echo '*.zip -delta' >"nums/$num/.gitattributes"
+    git -C "$worktree_path" add .gitattributes
+    git -C "$worktree_path" commit --quiet -m "add $num"
     git worktree remove "$worktree_path"
+
   fi
 
-  # mount worktree
-  git worktree add --quiet --detach --no-checkout "$worktree_path"
-
-  # create new orphan branch
-  branch_name="nums/$num"
-  git -C "$worktree_path" checkout --quiet --orphan "$branch_name"
-  git -C "$worktree_path" reset
-  git -C "$worktree_path" clean -fdq
-
-  # add file
-  cp "$file_path" "nums/$num/$new_name"
-  git -C "$worktree_path" add "$new_name"
-  echo '*.zip -delta' >"nums/$num/.gitattributes"
-  git -C "$worktree_path" add .gitattributes
-  git -C "$worktree_path" commit --quiet -m "add $num"
-  git worktree remove "$worktree_path"
+  echo "adding file to index: $file_path"
   echo "$new_name" >>files.txt
   git add files.txt
   git commit --quiet -m "files.txt: add $num"
+
+  mv -v "$file_path" trash/ || rm -v "$file_path"
 
   files_added=true
 
@@ -83,7 +116,8 @@ done
 
 
 
-if $files_added; then
+#if $files_added; then
+if false; then
 
   echo pushing all branches
   #git push --all --force

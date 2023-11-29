@@ -81,7 +81,8 @@ for file_path in "${files[@]}"; do
 
     if [ -d "$worktree_path" ]; then
       echo "removing old worktree $worktree_path"
-      git worktree remove "$worktree_path"
+      git worktree remove --force "$worktree_path"
+      rm -rf "$worktree_path"
     fi
 
     # mount worktree
@@ -99,7 +100,8 @@ for file_path in "${files[@]}"; do
     echo '*.zip -delta' >"nums/$num/.gitattributes"
     git -C "$worktree_path" add .gitattributes
     git -C "$worktree_path" commit --quiet -m "add $num"
-    git worktree remove "$worktree_path"
+    git worktree remove --force "$worktree_path"
+    rm -rf "$worktree_path"
 
   fi
 

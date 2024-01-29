@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 
-git add . && git commit -m "add shards"
+git add shards/ && git commit -m "add shards"

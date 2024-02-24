@@ -89,9 +89,11 @@ echo "last shard_id: $last_shard_id"
 echo "missing shards: $num_shards_missing"
 echo "missing files: $total_num_files_missing"
 
-missing_files_path="missing_files.$(date -Is).txt"
-echo "writing $missing_files_path"
-echo -n "$missing_files_list" >"$workdir/$missing_files_path"
-echo "TODO"
-echo "  mv $missing_files_path missing_numbers.txt"
-echo "... so fetch-subs.py can fetch the missing files"
+if [ -n "$missing_files_list" ]; then
+  missing_files_path="missing_files.$(date -Is).txt"
+  echo "writing $missing_files_path"
+  echo -n "$missing_files_list" >"$workdir/$missing_files_path"
+  echo "TODO"
+  echo "  mv $missing_files_path missing_numbers.txt"
+  echo "... so fetch-subs.py can fetch the missing files"
+fi

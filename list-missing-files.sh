@@ -11,8 +11,8 @@ total_num_files_missing=0
 missing_files_list=""
 
 # filter
-# opensubtitles.org.dump.9180519.to.9521948.by.lang.2023.04.26
-min_shard_id=9521
+# opensubtitles.org.dump.9700000.to.9799999
+min_shard_id=9800
 
 last_shard_id=$min_shard_id
 
@@ -43,27 +43,33 @@ while read shard_path; do
 
         # missing files
 
-        num_files_missing=$(( 1000 - $(ls -U ../new-subs/$missing_shard_id* 2>/dev/null | wc -l) ))
+        #echo "missing_shard_id $missing_shard_id"
+
+        #sql_query="select IDSubtitle from subz_metadata where IDSubtitle "
+        #sql_query+="between ${missing_shard_id}000 and ${missing_shard_id}999"
+        #expected_shard_nums=$(sqlite3 ../subtitles_all.latest.db "$sql_query")
+
+        expected_shard_nums=$(../subtitles_all.latest.db.get-num-range.sh "${missing_shard_id}000" "${missing_shard_id}999")
+
+        actual_shard_nums=$(cd ../new-subs/ && ls -U $missing_shard_id* 2>/dev/null | cut -d. -f1 | sort -n)
+
+        missing_shard_nums=$(
+          diff -u0 <(echo "$actual_shard_nums") <(echo "$expected_shard_nums") |
+          grep -E '^\+[0-9]' | cut -c2-
+        )
+
+        if false; then
+          echo "actual_shard_nums"; echo "$actual_shard_nums" | head
+          echo "expected_shard_nums"; echo "$expected_shard_nums" | head
+          echo "missing_shard_nums"; echo "$missing_shard_nums" | head
+        fi
+
+        num_files_missing=$(echo "$missing_shard_nums" | wc -l)
 
         echo "missing shard $missing_shard_id: $num_files_missing of 1000 files are missing"
 
-        if ((num_files_missing <= 10)); then
-          # list missing files
-          last_zip_id=$((${missing_shard_id}000 - 1))
-          while read zip_path; do
-            zip_id=${zip_path##*/}
-            zip_id=${zip_id%%.*}
-            #echo "$zip_id $zip_path"
-            if ((zip_id - last_zip_id != 1)); then
-              for missing_zip_id in $( seq $((last_zip_id + 1)) $((zip_id - 1)) ); do
-                #echo "  - $missing_zip_id"
-                echo "  missing file $missing_zip_id"
-                #num_files_missing=$((num_files_missing + 1))
-                missing_files_list+="$missing_zip_id"$'\n'
-              done
-            fi
-            last_zip_id=$zip_id
-          done < <(ls -U ../new-subs/$missing_shard_id* 2>/dev/null)
+        if ((num_files_missing <= 150)); then
+          missing_files_list+="$missing_shard_nums"$'\n'
         fi
 
         #echo "missing files of shard $missing_shard_id done"
@@ -80,7 +86,9 @@ while read shard_path; do
 
   last_shard_id=$shard_id
 
-done < <(find shards/ -name '*.db' | LANG=C sort)
+done < <(
+  find shards/ -name '*.db' | LANG=C sort --version-sort
+)
 
 
 
@@ -89,7 +97,9 @@ echo "last shard_id: $last_shard_id"
 echo "missing shards: $num_shards_missing"
 echo "missing files: $total_num_files_missing"
 
-if [ -n "$missing_files_list" ]; then
+write_missing_files_list=true
+
+if $write_missing_files_list && [ -n "$missing_files_list" ]; then
   missing_files_path="missing_files.$(date -Is).txt"
   echo "writing $missing_files_path"
   echo -n "$missing_files_list" >"$workdir/$missing_files_path"

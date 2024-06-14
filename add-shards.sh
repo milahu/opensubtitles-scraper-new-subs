@@ -14,5 +14,5 @@ while read shard_path; do
   sleep 1
 done < <(
   # note: temporary files are ignored by .gitignore
-  git status shards/ --porcelain=2 | grep '^? ' | cut -c3-
+  git status --untracked-files=all shards/ --porcelain=2 | grep '^? ' | cut -c3-
 )

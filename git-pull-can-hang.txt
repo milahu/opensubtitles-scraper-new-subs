@@ -1,0 +1,35 @@
+git pull can hang at "resolving deltas"
+
+remote: Enumerating objects: 665851, done.
+remote: Counting objects: 100% (63/63), done.
+remote: Compressing objects: 100% (40/40), done.
+remote: Total 665851 (delta 22), reused 63 (delta 22), pack-reused 665788
+Receiving objects: 100% (665851/665851), 312.32 MiB | 37.65 MiB/s, done.
+Resolving deltas:   0% (0/221981)
+Resolving deltas:  13% (30341/221981)
+
+each shard has about 20MB
+and shards are excluded from delta compression
+via "*.db -delta" in .gitattributes
+
+but this seems to be an issue with github
+i have removed many files with remove-shards.sh and git-gc.sh
+but "git gc" on github is less aggressive
+so there is still lots of garbage on github
+
+shallow clone just works:
+
+time git clone --depth=1 https://github.com/milahu/opensubtitles-scraper-new-subs
+Cloning into 'opensubtitles-scraper-new-subs'...
+remote: Enumerating objects: 34, done.
+remote: Counting objects: 100% (34/34), done.
+remote: Compressing objects: 100% (32/32), done.
+remote: Total 34 (delta 0), reused 32 (delta 0), pack-reused 0
+Receiving objects: 100% (34/34), 416.04 MiB | 22.29 MiB/s, done.
+Updating files: 100% (29/29), done.
+
+real    1m4.542s
+user    0m14.943s
+sys     0m10.802s
+
+quickfix: timeout on "git pull" and fall back to "git clone"

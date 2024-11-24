@@ -1,16 +1,34 @@
 #!/usr/bin/env bash
 
+# pull all git branches
+
 set -eux
 
-src=https://github.com/milahu/opensubtitles-scraper-new-subs
-dst=$HOME/src/milahu/opensubtitles-scraper-new-subs
+cd "$(dirname "$0")"
 
-# 3 minutes
-# shallow clone takes 1 minute
-max_pull_time=180
+remote=https://github.com/milahu/opensubtitles-scraper-new-subs
+main_branch=main
 
-if ! timeout $max_pull_time git -C "$dst" pull; then
-  echo "timeout on git pull. falling back to a fresh shallow clone"
-  mv -v "$dst" "$dst".bak.$(date +%Y-%m-%dT%H-%M-%S%z)
-  time git clone --depth=1 "$src" "$dst"
-fi
+# pull the main branch separately
+git pull "$remote"
+
+branches=(
+  # no: fatal: Refusing to fetch into current branch refs/heads/main of non-bare repository
+  #$main_branch
+  $(
+    git ls-remote --heads "$remote" |
+    sed 's|^.*refs/heads/||' |
+    grep -E '^shards-[0-9]+xxxxx$'
+  )
+)
+
+a=(git fetch --verbose "$remote")
+
+for branch in "${branches[@]}"; do
+  a+=("$branch:$branch")
+done
+
+a+=("$@")
+
+printf ">"; printf ' %q' "${a[@]}"; echo
+"${a[@]}"

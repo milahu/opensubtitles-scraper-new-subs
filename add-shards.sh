@@ -12,32 +12,41 @@ cd "$(dirname "$0")"
 
 shopt -s nullglob
 
-declare -A branch_set
+declare -A has_branch
 while read branch; do
-  branch_set["$branch"]=1
+  has_branch[$branch]=1
 done < <(
   git branch --format="%(refname:short)" |
   grep -E '^shards-[0-9]+xxxxx$'
 )
 
-declare -A worktree_set
-#declare -A worktree_of_branch
+declare -A has_worktree
+declare -A worktree_of_branch
 for dir in .git/worktrees/*; do
   worktree="$(cat "$dir"/gitdir)"
+  #echo "dir: $dir"
+  #echo "worktree 1: $worktree"
   # remove "/.git" suffix
   worktree="${worktree:0: -5}"
+  #echo "worktree 2: $worktree"
+  if ! [ -e "$worktree" ]; then
+    echo "removing missing worktree $worktree"
+    git worktree remove "$worktree"
+    continue
+  fi
   worktree="$(realpath "$worktree")"
-  worktree_set["$worktree"]=1
-  continue
+  #echo "worktree 3: $worktree"
+  has_worktree[$worktree]=1
   worktree_head="$(cat "$dir"/HEAD)"
-  # ref: refs/heads/
-  if [ "${worktree_head:0:16}" = 'ref: refs/heads/' ]; then
-    worktree_head="${worktree_head:16}"
-    #worktree_of_branch["$worktree_head"]="$worktree"
-  else
+  if [ "${worktree_head:0:16}" != 'ref: refs/heads/' ]; then
     echo "FIXME not recognized worktree_head ${worktree_head@Q}"
     exit 1
   fi
+  worktree_head="${worktree_head:16}"
+  worktree_of_branch[$worktree_head]="$worktree"
+  #echo "worktree_of_branch[$worktree_head]=${worktree@Q}"
+  worktree_short=$(realpath --relative-base="$PWD" "$worktree")
+  echo "branch $worktree_head is mounted at $worktree_short"
 done
 
 # https://unix.stackexchange.com/a/567537
@@ -76,8 +85,18 @@ for dir in shards/*xxxxx; do
   bak_dir="$dir.bak-$(mktemp -u XXXXXXXX)"
   branch=${dir/"/"/-}
   worktree="$(realpath "$dir")"
+  worktree_short=$(realpath --relative-base="$PWD" "$worktree")
 
-  if [ "${branch_set[$branch]}" != 1 ]; then
+  echo
+  echo "dir: $dir"
+  echo "bak_dir: $bak_dir"
+  echo "branch: $branch"
+  echo "worktree: $worktree_short"
+  echo "has_branch[\$branch]=${has_branch[$branch]}"
+  echo "has_worktree[\$worktree]=${has_worktree[$worktree]}"
+  #continue # debug
+
+  if [ "${has_branch[$branch]}" != 1 ]; then
     # git branch does not exist (and is not mounted)
     if [ -e "$dir" ]; then
       if ! [ -d "$dir" ]; then
@@ -89,23 +108,38 @@ for dir in shards/*xxxxx; do
     fi
     # create empty branch and mount it
     git_worktree_add_orphan "$dir" "$branch"
-    branch_set["$branch"]=1
-    worktree_set["$worktree"]=1
-  elif [ "${worktree_set[$worktree]}" != 1 ]; then
+    has_branch[$branch]=1
+    has_worktree[$worktree]=1
+  elif [ "${has_worktree[$worktree]}" != 1 ]; then
     # git branch exists but is not mounted
     if [ -e "$dir" ]; then
       mv -v "$dir" "$bak_dir"
     fi
     # mount existing branch
     git worktree add "$dir" "$branch"
-    worktree_set["$worktree"]=1
+    has_worktree[$worktree]=1
   fi
 
   if [ -e "$bak_dir" ]; then
     echo "moving files from existing worktree dir ${bak_dir@Q} to ${dir@Q}"
     shopt -s dotglob
-    mv "$bak_dir"/* "$dir"
-    rmdir "$bak_dir"
+    for db_path_1 in "$bak_dir"/*xxx.db; do
+      db_name=$(basename "$db_path_1")
+      db_path_2="$dir/$db_name"
+      if [ -e "$db_path_2" ]; then
+        sum_1=$(md5sum "$db_path_1" | head -c32)
+        sum_2=$(md5sum "$db_path_2" | head -c32)
+        if [ "$sum_1" = "$sum_2" ]; then
+          echo "removing duplicate file $db_path_1"
+          rm "$db_path_1"
+        else
+          echo "FIXME keeping duplicate file $db_path_1 with different content than $db_path_2"
+        fi
+        continue
+      fi
+      mv "$db_path_1" "$db_path_2"
+    done
+    rmdir "$bak_dir" || true
   fi
 
   # undo previous "git add"

@@ -2,6 +2,8 @@
 
 # show git log of all branches, sorted by commit date
 
+cd "$(dirname "$0")"
+
 main_branch=main
 
 branches=(

@@ -20,8 +20,21 @@ done < <(
   grep -E '^shards-[0-9]+xxxxx$'
 )
 
+# get_inode is needed to identify files across bind mounts
+# %Hd    major device number in decimal
+# %Ld    minor device number in decimal
+# %i     inode number
+
+function get_inode() {
+  stat -c'%Hd.%Ld.%i' "$1"
+}
+
 declare -A has_worktree
+declare -A has_inode
 declare -A worktree_of_branch
+# note: "path of inode" is not unique
+# multiple paths can point to the same inode
+declare -A inode_of_path
 for dir in .git/worktrees/*; do
   worktree="$(cat "$dir"/gitdir)"
   #echo "dir: $dir"
@@ -34,9 +47,13 @@ for dir in .git/worktrees/*; do
     git worktree remove "$worktree"
     continue
   fi
+  # note: realpath does not resolve bind mounts
   worktree="$(realpath "$worktree")"
   #echo "worktree 3: $worktree"
   has_worktree[$worktree]=1
+  inode=$(get_inode "$worktree")
+  has_inode[$inode]=1
+  inode_of_path["$worktree"]=$inode
   worktree_head="$(cat "$dir"/HEAD)"
   if [ "${worktree_head:0:16}" != 'ref: refs/heads/' ]; then
     echo "FIXME not recognized worktree_head ${worktree_head@Q}"
@@ -46,7 +63,7 @@ for dir in .git/worktrees/*; do
   worktree_of_branch[$worktree_head]="$worktree"
   #echo "worktree_of_branch[$worktree_head]=${worktree@Q}"
   worktree_short=$(realpath --relative-base="$PWD" "$worktree")
-  echo "branch $worktree_head is mounted at $worktree_short"
+  echo "branch $worktree_head is mounted at inode $inode = $worktree_short"
 done
 
 # https://unix.stackexchange.com/a/567537
@@ -86,15 +103,23 @@ for dir in shards/*xxxxx; do
   branch=${dir/"/"/-}
   worktree="$(realpath "$dir")"
   worktree_short=$(realpath --relative-base="$PWD" "$worktree")
+  inode=$(get_inode "$worktree")
 
   echo
   echo "dir: $dir"
   echo "bak_dir: $bak_dir"
   echo "branch: $branch"
   echo "worktree: $worktree_short"
+  echo "inode: $inode"
   echo "has_branch[\$branch]=${has_branch[$branch]}"
   echo "has_worktree[\$worktree]=${has_worktree[$worktree]}"
+  echo "has_inode[\$inode]=${has_inode[$inode]}"
   #continue # debug
+
+# renamed 'shards/74xxxxx' -> 'shards/74xxxxx.bak-BzeYLgEY'
+# Preparing worktree (checking out 'shards-74xxxxx')
+# fatal: 'shards-74xxxxx' is already used by worktree at '/mnt/ZCT3A520_8TB/root/home/user/src/milahu/opensubtitles-scraper/new-subs-repo-shards/shards/74xxxxx'
+# moving files from existing worktree dir 'shards/74xxxxx.bak-BzeYLgEY' to 'shards/74xxxxx'
 
   if [ "${has_branch[$branch]}" != 1 ]; then
     # git branch does not exist (and is not mounted)
@@ -110,7 +135,9 @@ for dir in shards/*xxxxx; do
     git_worktree_add_orphan "$dir" "$branch"
     has_branch[$branch]=1
     has_worktree[$worktree]=1
-  elif [ "${has_worktree[$worktree]}" != 1 ]; then
+  # this fails across bind mounts -> use inode
+  #elif [ "${has_worktree[$worktree]}" != 1 ]; then
+  elif [ "${has_inode[$inode]}" != 1 ]; then
     # git branch exists but is not mounted
     if [ -e "$dir" ]; then
       mv -v "$dir" "$bak_dir"
@@ -118,6 +145,7 @@ for dir in shards/*xxxxx; do
     # mount existing branch
     git worktree add "$dir" "$branch"
     has_worktree[$worktree]=1
+    has_inode[$inode]=1
   fi
 
   if [ -e "$bak_dir" ]; then

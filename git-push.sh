@@ -2,21 +2,29 @@
 
 # push all git branches
 
+# set -eux
+
+cd "$(dirname "$0")"
+
 remote=https://github.com/milahu/opensubtitles-scraper-new-subs
 main_branch=main
 
 branches=(
   $main_branch
   $(
-    git branch --format="%(refname:short)" |
-    grep -E '^shards-[0-9]+xxxxx$'
+    # shards-102xxxxx
+    # origin/shards-102xxxxx
+    git branch --all --format="%(refname:short)" |
+    grep -E -e '^shards-[0-9]+xxxxx$' -e '/shards-[0-9]+xxxxx$'
   )
 )
+# echo "branches:" "${branches[@]}"
 
 a=(git push "$remote")
 
 for branch in "${branches[@]}"; do
-  a+=("$branch:$branch")
+  dst_branch=${branch##*/}
+  a+=("$branch:$dst_branch")
 done
 
 a+=("$@")

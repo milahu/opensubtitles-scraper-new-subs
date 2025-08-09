@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -ex
+set -e
+# set -x # debug
 
 cd "$(dirname "$0")"
 

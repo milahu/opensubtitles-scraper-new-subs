@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
+# set -x # debug
+set -e
+
 cfg=(
   -c user.name="Milan Hauth"
   -c user.email="milahu@gmail.com"
 )
 
+export LANG=C
+
 cd "$(dirname "$0")"
 
 # mount all existing branches
-#./mount-branches.sh
+./mount-branches.sh
 
 shopt -s nullglob
 
@@ -16,8 +21,8 @@ declare -A has_branch
 while read branch; do
   has_branch[$branch]=1
 done < <(
-  git branch --format="%(refname:short)" |
-  grep -E '^shards-[0-9]+xxxxx$'
+  git branch --format="%(refname:short)" --all |
+  grep -E '(^|/)shards-[0-9]+xxxxx$'
 )
 
 # get_inode is needed to identify files across bind mounts
@@ -55,13 +60,18 @@ for dir in .git/worktrees/*; do
   has_inode[$inode]=1
   inode_of_path["$worktree"]=$inode
   worktree_head="$(cat "$dir"/HEAD)"
-  if [ "${worktree_head:0:16}" != 'ref: refs/heads/' ]; then
+  if [ "${worktree_head:0:16}" == 'ref: refs/heads/' ]; then
+    # local branch
+    worktree_head="${worktree_head:16}"
+  elif echo "$worktree_head" | grep -q -E -x '[0-9a-f]{40}'; then
+    # remote-tracking branch like "remotes/origin/shards-103xxxxx"
+    :
+  else
     echo "FIXME not recognized worktree_head ${worktree_head@Q}"
     exit 1
   fi
-  worktree_head="${worktree_head:16}"
   worktree_of_branch[$worktree_head]="$worktree"
-  #echo "worktree_of_branch[$worktree_head]=${worktree@Q}"
+  echo "worktree_of_branch[$worktree_head]=${worktree@Q}"
   worktree_short=$(realpath --relative-base="$PWD" "$worktree")
   echo "branch $worktree_head is mounted at inode $inode = $worktree_short"
 done
@@ -97,6 +107,9 @@ function git_branch_exists() {
   grep -q -x -m1 "$1"
 }
 
+echo
+echo "looping shard dirs in shards/*xxxxx ..."
+
 for dir in shards/*xxxxx; do
 
   bak_dir="$dir.bak-$(mktemp -u XXXXXXXX)"
@@ -104,6 +117,10 @@ for dir in shards/*xxxxx; do
   worktree="$(realpath "$dir")"
   worktree_short=$(realpath --relative-base="$PWD" "$worktree")
   inode=$(get_inode "$worktree")
+
+  # resolve remote-tracking branch
+  # example: shards-103xxxxx -> origin/shards-103xxxxx
+  branch=$(git branch --format="%(refname:short)" --all | grep -m1 -E "(^|/)$branch$")
 
   echo
   echo "dir: $dir"
@@ -188,3 +205,6 @@ for dir in shards/*xxxxx; do
   )
 
 done
+
+echo
+echo "looping shard dirs in shards/*xxxxx done"

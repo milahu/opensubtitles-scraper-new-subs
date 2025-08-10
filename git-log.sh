@@ -9,8 +9,8 @@ main_branch=main
 branches=(
   $main_branch
   $(
-    git branch --format="%(refname:short)" |
-    grep -E '^shards-[0-9]+xxxxx$'
+    git branch --format="%(refname:short)" --all |
+    grep -E '(^|/)shards-[0-9]+xxxxx$'
   )
 )
 

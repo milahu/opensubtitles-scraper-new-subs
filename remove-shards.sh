@@ -31,9 +31,9 @@ for path in "${path_list[@]}"; do
     while read -r branch; do
         echo "deleting local branch $branch"
         if [ "$branch" = "$branch_name" ]; then
-            git branch --delete "$branch"
+            git branch --delete --force "$branch"
         else
-            git branch --delete --remote "$branch"
+            git branch --delete --force --remote "$branch"
         fi
     done
     # delete remote branches

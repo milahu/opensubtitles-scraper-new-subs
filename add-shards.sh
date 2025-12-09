@@ -92,7 +92,9 @@ function git_worktree_add_orphan() {
   local branch="$2"
   if version_greater_equal "$git_version" 2.42; then
     # this requires git version 2.42
-    git worktree add --orphan "$path" "$branch"
+    # git worktree add --orphan "$path" "$branch"
+    git worktree add --orphan "$path"
+    git -C "$path" checkout -b "$branch"
     return $?
   fi
   # this also works before git version 2.42
@@ -120,7 +122,8 @@ for dir in shards/*xxxxx; do
 
   # resolve remote-tracking branch
   # example: shards-103xxxxx -> origin/shards-103xxxxx
-  branch=$(git branch --format="%(refname:short)" --all | grep -m1 -E "(^|/)$branch$")
+  # _branch=$(git branch --format="%(refname:short)" --all | grep -m1 -E "(^|/)$branch$") || true
+  # if [ -n "$_branch" ]; then branch="$_branch"; fi
 
   echo
   echo "dir: $dir"
@@ -128,7 +131,11 @@ for dir in shards/*xxxxx; do
   echo "branch: $branch"
   echo "worktree: $worktree_short"
   echo "inode: $inode"
-  echo "has_branch[\$branch]=${has_branch[$branch]}"
+  if [ -n "$branch" ] && [[ -v "has_branch[$branch]" ]]; then
+    echo "has_branch[\$branch]=${has_branch[$branch]}"
+  else
+    echo "has_branch[\$branch]="
+  fi
   echo "has_worktree[\$worktree]=${has_worktree[$worktree]}"
   echo "has_inode[\$inode]=${has_inode[$inode]}"
   #continue # debug
@@ -138,7 +145,7 @@ for dir in shards/*xxxxx; do
 # fatal: 'shards-74xxxxx' is already used by worktree at '/mnt/ZCT3A520_8TB/root/home/user/src/milahu/opensubtitles-scraper/new-subs-repo-shards/shards/74xxxxx'
 # moving files from existing worktree dir 'shards/74xxxxx.bak-BzeYLgEY' to 'shards/74xxxxx'
 
-  if [ "${has_branch[$branch]}" != 1 ]; then
+  if ! [[ -v "has_branch[$branch]" ]] || [ "${has_branch[$branch]}" != 1 ]; then
     # git branch does not exist (and is not mounted)
     if [ -e "$dir" ]; then
       if ! [ -d "$dir" ]; then
@@ -154,7 +161,7 @@ for dir in shards/*xxxxx; do
     has_worktree[$worktree]=1
   # this fails across bind mounts -> use inode
   #elif [ "${has_worktree[$worktree]}" != 1 ]; then
-  elif [ "${has_inode[$inode]}" != 1 ]; then
+  elif ! [[ -v "has_inode[$inode]" ]] || [ "${has_inode[$inode]}" != 1 ]; then
     # git branch exists but is not mounted
     if [ -e "$dir" ]; then
       mv -v "$dir" "$bak_dir"
@@ -188,7 +195,7 @@ for dir in shards/*xxxxx; do
   fi
 
   # undo previous "git add"
-  git -C $dir restore --staged .
+  git -C $dir restore --staged . || true
 
   # add one shard per commit to allow incremental "git push"
   while read shard_path; do
@@ -197,11 +204,17 @@ for dir in shards/*xxxxx; do
     echo "shard_name $shard_name"
     #continue # dry run
     git -C $dir add "$shard_path"
-    git -C $dir "${cfg[@]}" commit -m "add shard $shard_name"
-    sleep 1
+    d="$(stat -c'%y' "$dir/$shard_path")"
+    GIT_AUTHOR_DATE="$d" \
+    GIT_COMMITTER_DATE="$d" \
+    git -C $dir "${cfg[@]}" commit -m "add shard $shard_name" --date="$d"
+    # sleep 1
   done < <(
     # note: temporary files are ignored by .gitignore
-    git -C $dir status --untracked-files=all --porcelain=2 | grep '^? ' | cut -c3-
+    git -C $dir status --untracked-files=all --porcelain=2 | grep '^? ' | cut -c3- |
+    while read shard_path; do
+      echo "$(stat -c'%Y' "$dir/$shard_path")" "$shard_path"
+    done | sort -g | cut -d' ' -f2-
   )
 
 done
